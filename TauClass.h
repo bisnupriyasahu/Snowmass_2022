@@ -45,12 +45,20 @@ public :
    TH1F *ptratio_;
    TH1F *pipt_tauvispt_;
    TH1F *tauvispt_taupt_;
-
+   TH1F *HT;
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
    Int_t           evt_size;
    Int_t           vtx_size;
+
+   Int_t           PFcandidate_size;
+   Float_t         PFcandidate_pid[416];   //[PFcandidate_size]                                                                                                                                          
+   Float_t         PFcandidate_pt[416];   //[PFcandidate_size]                                                                                                                                           
+   Float_t         PFcandidate_eta[416];   //[PFcandidate_size]                                                                                                                                          
+   Float_t         PFcandidate_phi[416];   //[PFcandidate_size]                                                                                                                                          
+   Float_t         PFcandidate_mass[416];   //[PFcandidate_size]                                                                                                                                         
+   Float_t         PFcandidate_charge[416];   //[PFcandidate_size]   
    Int_t           trueInteractions;
    Int_t           npuVertices;
    Float_t         vtx_pt2[258];   //[vtx_size]
@@ -156,6 +164,13 @@ public :
    // List of branches
    TBranch        *b_evt_size;   //!
    TBranch        *b_vtx_size;   //!
+   TBranch        *b_PFcandidate_size;   //!                                                                                                                                                             
+   TBranch        *b_PFcandidate_pid;   //!                                                                                                                                                              
+   TBranch        *b_PFcandidate_pt;   //!                                                                                                                                                               
+   TBranch        *b_PFcandidate_eta;   //!                                                                                                                                                              
+   TBranch        *b_PFcandidate_phi;   //!                                                                                                                                                              
+   TBranch        *b_PFcandidate_mass;   //!                                                                                                                                                             
+   TBranch        *b_PFcandidate_charge;   //!         
    TBranch        *b_trueInteractions;   //!
    TBranch        *b_npuVertices;   //!
    TBranch        *b_vtx_pt2;   //!
@@ -271,6 +286,7 @@ public :
    virtual int TauCand1();
    virtual int TauCand2(int tau1Index);
    virtual vector<int> BTagjet();
+   
 
 
 };
@@ -350,6 +366,13 @@ void TauClass::Init(TTree *tree)
 
    fChain->SetBranchAddress("evt_size", &evt_size, &b_evt_size);
    fChain->SetBranchAddress("vtx_size", &vtx_size, &b_vtx_size);
+   fChain->SetBranchAddress("PFcandidate_size", &PFcandidate_size, &b_PFcandidate_size);
+   fChain->SetBranchAddress("PFcandidate_pid", PFcandidate_pid, &b_PFcandidate_pid);
+   fChain->SetBranchAddress("PFcandidate_pt", PFcandidate_pt, &b_PFcandidate_pt);
+   fChain->SetBranchAddress("PFcandidate_eta", PFcandidate_eta, &b_PFcandidate_eta);
+   fChain->SetBranchAddress("PFcandidate_phi", PFcandidate_phi, &b_PFcandidate_phi);
+   fChain->SetBranchAddress("PFcandidate_mass", PFcandidate_mass, &b_PFcandidate_mass);
+   fChain->SetBranchAddress("PFcandidate_charge", PFcandidate_charge, &b_PFcandidate_charge);
    fChain->SetBranchAddress("trueInteractions", &trueInteractions, &b_trueInteractions);
    fChain->SetBranchAddress("npuVertices", &npuVertices, &b_npuVertices);
    fChain->SetBranchAddress("vtx_pt2", vtx_pt2, &b_vtx_pt2);
