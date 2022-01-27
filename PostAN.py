@@ -38,11 +38,11 @@ treeReader = ROOT.ExRootTreeReader(chain)
 numberOfEntries = treeReader.GetEntries()
 
 # Get pointers to branches used in this analysis
-branchJet      = treeReader.UseBranch("JetPUPPITight")
+#branchJet      = treeReader.UseBranch("JetPUPPITight")
 branchElectron = treeReader.UseBranch("ElectronMedium")
 branchWeight   = treeReader.UseBranch("Weight")
 branchEvent    = treeReader.UseBranch("Event")
-branchPuppiJet = treeReader.UseBranch('JetPUPPI')
+branchJet = treeReader.UseBranch('JetPUPPI')
 branchPuppiMissingET  = treeReader.UseBranch('PuppiMissingET')
 branchPuppiCandidate  = treeReader.UseBranch('ParticleFlowCandidate')
 branchRho             = treeReader.UseBranch('Rho')
@@ -66,22 +66,19 @@ for entry in range(0, numberOfEntries):
   treeReader.ReadEntry(entry)
 
   # If event contains at least 1 jet
-  if branchJet.GetEntries() > 0:
-    # Take first jet
-    tau = branchJet.At(0)
-    
-    #opposite charged tau
+  #if branchJet.GetEntries() > 0:
+  # Take first jet
+  tau1_idx = -1
+  tau2_idx = -1
+  tau1_tau2_HT = -1
 
-    tau1_idx = -1
-    tau2_idx = -1
-    tau1_tau2_HT = -1
-    i = 0
-    for iTau1, tau1 in enumerate(branchJet) :
-      i +=1
-      tautagOk = ( tau1.TauTag & (1 << 2) )
-      if (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk):
-        if (abs(tau1.Charge) != 1): continue
-        #else: print "tau1.Charge", tau1.Charge
+  i = 0
+  for iTau1, tau1 in enumerate(branchJet) :
+    i +=1
+    tautagOk = ( tau1.TauTag & (1 << 2) )
+    if (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk):
+      if (abs(tau1.Charge) != 1): continue
+      #else: print "tau1.Charge", tau1.Charge
       for iTau2, tau2 in enumerate(branchJet) :
         if (iTau1 == iTau2) : continue
         if (tau2.PT >30 and abs(tau2.Eta) < 3. and tautagOk):
@@ -92,41 +89,33 @@ for entry in range(0, numberOfEntries):
         HT = tau1.PT + tau2.PT
         print "HT in loop ", HT
         if (HT > tau1_tau2_HT) :
-          tau1_idx = iTau1
-          tau2_idx = iTau2
-          tau1_tau2_HT = HT
-    print "charge of tau1",tau1_idx
-    print "charge of tau2",tau2_idx
-    print "HT ",tau1_tau2_HT
-
-    btag_idx = -1
-    for ibjet, bjet in enumerate(branchJet) :
-      btagok = (bjet.BTag & (1 << 1) )
-      if (bjet.PT > 30 and abs(bjet.Eta) < 5. and btagok):
-        btag_idx = ibjet
-      if (btag_idx > 0):
-        dR2 = ROOT.reco.deltaR2(bjet.Eta,bjet.Phi, 
-
-
-
-
-
-    print "btag index" , btag_idx
-
-    HT_Total = -1
-    for ijet, jet in enumerate(branchJet) :
-      HT_Total += jet.PT
-    print "Total HT", HT_Total
-
+            tau1_idx = iTau1
+            tau2_idx = iTau2
+            tau1_tau2_HT = HT
+  btag_idx = -1    
+  for ibjet, bjet in enumerate(branchJet) :
+    if (ibjet == tau1_idx or ibjet == tau2_idx): continue
     
+    btagok = (bjet.BTag & (1 << 1) )
+    if (bjet.PT > 30 and abs(bjet.Eta) < 5. and btagok):
+      btag_idx = ibjet
+  print "btag index" , btag_idx
 
-
-    #if (btag_idx > 0):
-    # dR = 
+  HT_Total = -1
+  for ijet, jet in enumerate(branchJet) :
+    HT_Total += jet.PT
+  print "Total HT", HT_Total
     
+  Met_PT = -1
+  imet_idx = -1
+  for imet, met in enumerate(branchPuppiMissingET):
+    if (met.MET > 50):
+      Met_PT = met.MET
+      imet_idx = imet
 
-
-
+  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50)): 
+    continue
+  
 
 
 
