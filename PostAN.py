@@ -27,52 +27,6 @@ try:
 except:
   pass
 
-
-def taucand1(tau,branchJet):
-  i = 0
-  tmpcand = np.array([])
-  #  tmpcand.clear()
-  for tau in branchJet:
-    i +=1
-    #tmp_tau_2.SetPtEtaPhi(tau_pt[i],tau_eta[i],tau_phi[i]);
-    wp = 2
-    #    print "coming inside 1st tau"
-    tautagOk = ( tau.TauTag & (1 << wp) )
-    if (tau.PT >30 and abs(tau.Eta) < 3. and tautagOk):
-      if (abs(tau.Charge) == 1):
-        tmpcand = np.append(tmpcand,tau)
-  if (tmpcand.size > 0):
-    return len(tmpcand)
-  else:
-    return -1
-
-
-  
-
-def taucand2(tau,branchJet,index_tau1):
-  i = 0
-  tmpcand = np.array([])
-  #tmpcand.clear()
-  for tau in branchJet:
-    i +=1
-    if (index_tau1 >= 0 and tau == index_tau1): 
-      continue
-    #tmp_tau_2.SetPtEtaPhi(tau_pt[i],tau_eta[i],tau_phi[i]);                                                                                                                                               
-    #print "coming inside 2nd tau"
-    wp = 2
-    tautagOk = ( tau.TauTag & (1 << wp) )
-    if (tau.PT >30 and abs(tau.Eta) < 3. and tautagOk):
-      if (abs(tau.Charge) == 1):
-        tmpcand = np.append(tmpcand,tau)
-  #print "tmp cand size is ", tmpcand.size
-  if (tmpcand.size > 0):
-    return len(tmpcand)
-  else:
-    return -1
-
-
-
-
 inputFile = sys.argv[1]
 outputFile = sys.argv[2]
 # Create chain of root trees
@@ -117,35 +71,66 @@ for entry in range(0, numberOfEntries):
     tau = branchJet.At(0)
     
     #opposite charged tau
-    index_tau1 = index_tau1 = -99
+
+    tau1_idx = -1
+    tau2_idx = -1
+    tau1_tau2_HT = -1
     i = 0
-    for tau in branchJet:
+    for iTau1, tau1 in enumerate(branchJet) :
       i +=1
-      index_tau1 = taucand1(tau,branchJet)
-      print "index_tau 1  ", index_tau1
-      index_tau2 = taucand2(tau,branchJet,index_tau1)  
-      print "index_tau 2  ", index_tau2
+      tautagOk = ( tau1.TauTag & (1 << 2) )
+      if (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk):
+        if (abs(tau1.Charge) != 1): continue
+        #else: print "tau1.Charge", tau1.Charge
+      for iTau2, tau2 in enumerate(branchJet) :
+        if (iTau1 == iTau2) : continue
+        if (tau2.PT >30 and abs(tau2.Eta) < 3. and tautagOk):
+          if (abs(tau2.Charge) != 1):
+            continue
+          #else: print "tau2.Charge", tau2.Charge
+      if (tau1.Charge*tau2.Charge < 0):
+        HT = tau1.PT + tau2.PT
+        print "HT in loop ", HT
+        if (HT > tau1_tau2_HT) :
+          tau1_idx = iTau1
+          tau2_idx = iTau2
+          tau1_tau2_HT = HT
+    print "charge of tau1",tau1_idx
+    print "charge of tau2",tau2_idx
+    print "HT ",tau1_tau2_HT
 
-      if( index_tau1 > -1 and index_tau2 > -1 ):
-        print "coming inside the taucharge"
-        print "index_tau 1  ", index_tau1
-        print "index_tau 2 ", index_tau2
-        if(index_tau1 < 0):
-          print "coming inside the taucharge"
-'''
-      if(tau_charge[index_tau1]*tau_charge[index_tau2] < 0  )
-          
-    ## 0 - Loose , 1 - Medium, 2 - Tight
-    wp = 1
+    btag_idx = -1
+    for ibjet, bjet in enumerate(branchJet) :
+      btagok = (bjet.BTag & (1 << 1) )
+      if (bjet.PT > 30 and abs(bjet.Eta) < 5. and btagok):
+        btag_idx = ibjet
+      if (btag_idx > 0):
+        dR2 = ROOT.reco.deltaR2(bjet.Eta,bjet.Phi, 
 
-    BtagOk = ( tau.BTag & (1 << wp) )
-    pt = tau.PT
-    eta = abs(tau.Eta)
 
-    # Plot jet transverse momentum
-    if (BtagOk and pt > 30. and eta < 3.):
-        tauPT.Fill(tau.PT)
-'''       
+
+
+
+    print "btag index" , btag_idx
+
+    HT_Total = -1
+    for ijet, jet in enumerate(branchJet) :
+      HT_Total += jet.PT
+    print "Total HT", HT_Total
+
+    
+
+
+    #if (btag_idx > 0):
+    # dR = 
+    
+
+
+
+
+
+
+
 
 #cnv.cd(2)
 outputfile.cd()
