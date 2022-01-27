@@ -7,6 +7,9 @@ from array import array
 import math
 import re
 
+import numpy as np
+
+
 try:
   input = raw_input
 except:
@@ -27,36 +30,46 @@ except:
 
 def taucand1(tau,branchJet):
   i = 0
-  tmpcand = []  
+  tmpcand = np.array([])
   #  tmpcand.clear()
   for tau in branchJet:
     i +=1
     #tmp_tau_2.SetPtEtaPhi(tau_pt[i],tau_eta[i],tau_phi[i]);
     wp = 2
-    print "coming inside 1st tau"
+    #    print "coming inside 1st tau"
     tautagOk = ( tau.TauTag & (1 << wp) )
     if (tau.PT >30 and abs(tau.Eta) < 3. and tautagOk):
       if (abs(tau.Charge) == 1):
-        tmpcand = append(tau) 
+        tmpcand = np.append(tmpcand,tau)
+  if (tmpcand.size > 0):
+    return len(tmpcand)
+  else:
+    return -1
 
-  return tmpcand
+
+  
 
 def taucand2(tau,branchJet,index_tau1):
   i = 0
-  tmpcand = []
+  tmpcand = np.array([])
   #tmpcand.clear()
   for tau in branchJet:
     i +=1
     if (index_tau1 >= 0 and tau == index_tau1): 
       continue
     #tmp_tau_2.SetPtEtaPhi(tau_pt[i],tau_eta[i],tau_phi[i]);                                                                                                                                               
-    print "coming inside 2nd tau"
+    #print "coming inside 2nd tau"
     wp = 2
     tautagOk = ( tau.TauTag & (1 << wp) )
     if (tau.PT >30 and abs(tau.Eta) < 3. and tautagOk):
       if (abs(tau.Charge) == 1):
-        tmpcand = append(tau)
-  return tmpcand
+        tmpcand = np.append(tmpcand,tau)
+  #print "tmp cand size is ", tmpcand.size
+  if (tmpcand.size > 0):
+    return len(tmpcand)
+  else:
+    return -1
+
 
 
 
@@ -104,15 +117,20 @@ for entry in range(0, numberOfEntries):
     tau = branchJet.At(0)
     
     #opposite charged tau
-    index_tau1 = index_tau1 = -1
+    index_tau1 = index_tau1 = -99
     i = 0
     for tau in branchJet:
       i +=1
       index_tau1 = taucand1(tau,branchJet)
-      print "index_tau 1  ", index_tau1.Charge
+      print "index_tau 1  ", index_tau1
       index_tau2 = taucand2(tau,branchJet,index_tau1)  
+      print "index_tau 2  ", index_tau2
+
       if( index_tau1 > -1 and index_tau2 > -1 ):
-        if(tau.Charge(index_tau1) * tau.Charge(index_tau2) < 0):
+        print "coming inside the taucharge"
+        print "index_tau 1  ", index_tau1
+        print "index_tau 2 ", index_tau2
+        if(index_tau1 < 0):
           print "coming inside the taucharge"
 '''
       if(tau_charge[index_tau1]*tau_charge[index_tau2] < 0  )
