@@ -57,7 +57,7 @@ branchFatJet          = treeReader.UseBranch('JetPUPPIAK8')
 outputfile = ROOT.TFile(outputFile, 'RECREATE')
 tauPT = ROOT.TH1F("tau_pt", "tau P_{T}", 100, 0.0, 1000.0)
 metPT = ROOT.TH1F("met_pt", "met P_{T}", 100, 0.0, 1000.0)
-
+HT_Tot = ROOT.TH1F("HT", "P_{T}", 100, 0.0, 1000.0)
 #histElectronPT = ROOT.TH1F("Electron_pt", "electron P_{T}", 100, 0.0, 1000.0)
 
 # Loop over all events
@@ -75,13 +75,14 @@ for entry in range(0, numberOfEntries):
   i = 0
   for iTau1, tau1 in enumerate(branchJet) :
     i +=1
-    tautagOk = ( tau1.TauTag & (1 << 2) )
-    if (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk):
+    tautagOk1 = ( tau1.TauTag & (1 << 2) )
+    if (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk1):
       if (abs(tau1.Charge) != 1): continue
       #else: print "tau1.Charge", tau1.Charge
       for iTau2, tau2 in enumerate(branchJet) :
         if (iTau1 == iTau2) : continue
-        if (tau2.PT >30 and abs(tau2.Eta) < 3. and tautagOk):
+        tautagOk2 = ( tau2.TauTag & (1 << 2) )
+        if (tau2.PT >30 and abs(tau2.Eta) < 3. and tautagOk2):
           if (abs(tau2.Charge) != 1):
             continue
           #else: print "tau2.Charge", tau2.Charge
@@ -113,8 +114,12 @@ for entry in range(0, numberOfEntries):
       Met_PT = met.MET
       imet_idx = imet
 
-  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50)): 
-    continue
+  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50)): continue
+  for j, tau in enumerate(branchJet) :
+    if (j == tau1_idx or j == tau2_idx or j == btag_idx):
+      tauPT.Fill(tau.PT)
+      metPT.Fill(Met_PT)
+      HT_Tot.Fill(HT_Total)
   
 
 
@@ -125,7 +130,10 @@ for entry in range(0, numberOfEntries):
 outputfile.cd()
 tauPT.Write()
 metPT.Write()
+HT_Tot.Write()
 print tauPT.GetEntries()
 print metPT.GetEntries()
+print HT.GetEntries()
+
 outputfile.Close()
 input("Press Enter to continue...")
