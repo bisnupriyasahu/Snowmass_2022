@@ -55,9 +55,16 @@ branchFatJet          = treeReader.UseBranch('JetPUPPIAK8')
 
 # Book histograms
 outputfile = ROOT.TFile(outputFile, 'RECREATE')
-tauPT = ROOT.TH1F("tau_pt", "tau P_{T}", 100, 0.0, 1000.0)
+tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 0.0, 1000.0)
+tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 0.0, 1000.0)
 metPT = ROOT.TH1F("met_pt", "met P_{T}", 100, 0.0, 1000.0)
 HT_Tot = ROOT.TH1F("HT", "P_{T}", 100, 0.0, 1000.0)
+leadch_tau1 = ROOT.TH1F("leadch_tau1", "P_{T}", 50, 0.0, 2.0)
+leadch_tau2 = ROOT.TH1F("leadch_tau2", "P_{T}", 50, 0.0, 2.0)
+
+
+
+
 #histElectronPT = ROOT.TH1F("Electron_pt", "electron P_{T}", 100, 0.0, 1000.0)
 
 # Loop over all events
@@ -88,7 +95,7 @@ for entry in range(0, numberOfEntries):
           #else: print "tau2.Charge", tau2.Charge
       if (tau1.Charge*tau2.Charge < 0):
         HT = tau1.PT + tau2.PT
-        print "HT in loop ", HT
+        #print "HT in loop ", HT
         if (HT > tau1_tau2_HT) :
             tau1_idx = iTau1
             tau2_idx = iTau2
@@ -100,40 +107,79 @@ for entry in range(0, numberOfEntries):
     btagok = (bjet.BTag & (1 << 1) )
     if (bjet.PT > 30 and abs(bjet.Eta) < 5. and btagok):
       btag_idx = ibjet
-  print "btag index" , btag_idx
+  #print "btag index" , btag_idx
 
   HT_Total = -1
   for ijet, jet in enumerate(branchJet) :
     HT_Total += jet.PT
-  print "Total HT", HT_Total
+  #print "Total HT", HT_Total
     
   Met_PT = -1
   imet_idx = -1
   for imet, met in enumerate(branchPuppiMissingET):
-    if (met.MET > 50):
-      Met_PT = met.MET
-      imet_idx = imet
-
-  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50)): continue
-  for j, tau in enumerate(branchJet) :
-    if (j == tau1_idx or j == tau2_idx or j == btag_idx):
-      tauPT.Fill(tau.PT)
-      metPT.Fill(Met_PT)
-      HT_Tot.Fill(HT_Total)
+    Met_PT = met.MET
+    imet_idx = imet
+  #print imet_idx
   
 
+  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50)): continue
+  tau_1 = branchJet.At(tau1_idx)
+  tau_2 = branchJet.At(tau2_idx)
+  met_pt = branchPuppiMissingET.At(imet_idx)
+  tau1pt = tau_1.PT
+  tau2pt = tau_2.PT
+  metpt = met_pt.MET
 
+  tauPT_1.Fill(tau1pt)
+  tauPT_2.Fill(tau2pt)
+  metPT.Fill(metpt)
+  HT_Tot.Fill(HT_Total)
+
+
+  isLeptonic = False  
+  CH_PT = -1
+  for consti in tau1.Constituents:
+    ids = consti.PID
+    #CH_PT = consti.PT
+    if (abs(ids) in [11, 12, 13, 14]):
+      isLeptonic = True
+      break
+  if (isLeptonic == True or consti.Charge == 0) :
+    continue
+  #print "ids of tau1", consti.PID
+
+  dR = math.sqrt(  (abs(consti.Eta)-abs(tau1.Eta)) * (abs(consti.Eta)-abs(tau1.Eta)) + (abs(consti.Phi)-abs(tau1.Phi)) * (abs(consti.Phi)-abs(tau1.Phi)) )
+
+  if (dR < 0.1):
+    print dR
+    chpt = consti.PT
+    print "all ch pt is ", chpt
+    if (chpt > CH_PT):
+      CH_PT = chpt
+  print "highest pt ", CH_PT 
+  leadchtau1 = CH_PT/tau1pt
+  leadchtau2 = CH_PT/tau2pt
+
+  leadch_tau1.Fill(leadchtau1)
+  leadch_tau2.Fill(leadchtau2)
 
 
 
 #cnv.cd(2)
 outputfile.cd()
-tauPT.Write()
+tauPT_1.Write()
+tauPT_2.Write()
 metPT.Write()
 HT_Tot.Write()
-print tauPT.GetEntries()
+leadch_tau1.Write()
+leadch_tau2.Write()
+
+print tauPT_1.GetEntries()
+print tauPT_2.GetEntries()
 print metPT.GetEntries()
-print HT.GetEntries()
+print HT_Tot.GetEntries()
+print leadch_tau1.GetEntries()
+print leadch_tau2.GetEntries()
 
 outputfile.Close()
 input("Press Enter to continue...")
