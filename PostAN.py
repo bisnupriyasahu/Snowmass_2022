@@ -199,7 +199,7 @@ for entry in range(0, numberOfEntries):
       if (dr_1 < 0.1):
         gen_1 = gen
       if (dr_2 < 0.1):
-        gen2 = gen
+        gen_2 = gen
         print "gen2 pt ", gen.PT
   if (gen_1 is not None):
     gen_1pt =  gen_1.PT/tau1.PT
