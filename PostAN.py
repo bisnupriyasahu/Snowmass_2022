@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/Usr/bin/env python
 
 import sys
 
@@ -59,8 +59,10 @@ tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 0.0, 1000.0)
 tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 0.0, 1000.0)
 metPT = ROOT.TH1F("met_pt", "met P_{T}", 100, 0.0, 1000.0)
 HT_Tot = ROOT.TH1F("HT", "P_{T}", 100, 0.0, 1000.0)
-leadch_tau1 = ROOT.TH1F("leadch_tau1", "P_{T}", 50, 0.0, 2.0)
-leadch_tau2 = ROOT.TH1F("leadch_tau2", "P_{T}", 50, 0.0, 2.0)
+ptratio_tau1 = ROOT.TH1F("ptratio_tau1", "P_{T}", 50, 0.0, 2.0)
+ptratio_tau2 = ROOT.TH1F("ptratio_tau2", "P_{T}", 50, 0.0, 2.0)
+gen_ptratio_tau1 = ROOT.TH1F("gen_ptratio_tau1", "P_{T}", 50, 0.0, 2.0)
+gen_ptratio_tau2 = ROOT.TH1F("gen_ptratio_tau2", "P_{T}", 50, 0.0, 2.0)
 
 
 
@@ -137,31 +139,76 @@ for entry in range(0, numberOfEntries):
 
 
   isLeptonic = False  
-  CH_PT = -1
+  #CH_PT = -1
+  tau1_leadCH = None
   for consti in tau1.Constituents:
     ids = consti.PID
     #CH_PT = consti.PT
     if (abs(ids) in [11, 12, 13, 14]):
       isLeptonic = True
-      break
-  if (isLeptonic == True or consti.Charge == 0) :
-    continue
-  #print "ids of tau1", consti.PID
+   
+    if (isLeptonic == True or consti.Charge == 0) :
+      continue
+    #print "ids of tau1", consti.PID
+    dR = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
+    if (dR < 0.1):
+      print dR
+      chpt = consti.PT
+      #print "all ch pt is ", chpt
+      if (tau1_leadCH is None or consti.PT > tau1_leadCH.PT):
+        tau1_leadCH = consti
+  if (tau1_leadCH is not None):
+    leadchtau1 =  tau1_leadCH.PT/tau1.PT
+    ptratio_tau1.Fill(leadchtau1)
 
-  dR = math.sqrt(  (abs(consti.Eta)-abs(tau1.Eta)) * (abs(consti.Eta)-abs(tau1.Eta)) + (abs(consti.Phi)-abs(tau1.Phi)) * (abs(consti.Phi)-abs(tau1.Phi)) )
+  isLeptonic2 = False  
+  #CH_PT = -1
+  tau2_leadCH = None
+  for consti2 in tau1.Constituents:
+    ids2 = consti2.PID
+    #CH_PT = consti.PT
+    if (abs(ids2) in [11, 12, 13, 14]):
+      isLeptonic2 = True
+   
+    if (isLeptonic2 == True or consti2.Charge == 0) :
+      continue
+    #print "ids of tau1", consti.PID
+    dR2 = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
+    if (dR2 < 0.1):
+      #print dR
+      chpt = consti.PT
+      #print "all ch pt is ", chpt
+      if (tau2_leadCH is None or consti2.PT > tau2_leadCH.PT):
+        tau2_leadCH = consti2
+  if (tau2_leadCH is not None):
+    leadchtau2 =  tau2_leadCH.PT/tau2.PT
+    ptratio_tau2.Fill(leadchtau2)
+  
 
-  if (dR < 0.1):
-    print dR
-    chpt = consti.PT
-    print "all ch pt is ", chpt
-    if (chpt > CH_PT):
-      CH_PT = chpt
-  print "highest pt ", CH_PT 
-  leadchtau1 = CH_PT/tau1pt
-  leadchtau2 = CH_PT/tau2pt
+ 
+  gen_1 = None
+  gen_2 = None
+  for igen,gen in enumerate(branchParticle):
+    if (abs(gen.PID) == 15):
+      print "gen pid ",gen.PID
+      dr_1 =  math.sqrt(  (gen.Eta-(tau1.Eta)) * ((gen.Eta)-(tau1.Eta)) + ((gen.Phi)-(tau1.Phi)) * ((gen.Phi)-(tau1.Phi)) )
+      dr_2 =  math.sqrt(  (gen.Eta-(tau2.Eta)) * ((gen.Eta)-(tau2.Eta)) + ((gen.Phi)-(tau2.Phi)) * ((gen.Phi)-(tau2.Phi)) )
+      print "dr 1 is ", dr_1
+      print "dr 2 is ",dr_2
 
-  leadch_tau1.Fill(leadchtau1)
-  leadch_tau2.Fill(leadchtau2)
+      if (dr_1 < 0.1):
+        gen_1 = gen
+      if (dr_2 < 0.1):
+        gen2 = gen
+        print "gen2 pt ", gen.PT
+  if (gen_1 is not None):
+    gen_1pt =  gen_1.PT/tau1.PT
+    gen_ptratio_tau1.Fill(gen_1pt)
+  if (gen_2 is not None):
+    gen_2pt =  gen_2.PT/tau2.PT
+    gen_ptratio_tau2.Fill(gen_2pt)
+
+
 
 
 
@@ -171,15 +218,19 @@ tauPT_1.Write()
 tauPT_2.Write()
 metPT.Write()
 HT_Tot.Write()
-leadch_tau1.Write()
-leadch_tau2.Write()
+ptratio_tau1.Write()
+ptratio_tau2.Write()
+gen_ptratio_tau1.Write()
+gen_ptratio_tau2.Write()
 
 print tauPT_1.GetEntries()
 print tauPT_2.GetEntries()
 print metPT.GetEntries()
 print HT_Tot.GetEntries()
-print leadch_tau1.GetEntries()
-print leadch_tau2.GetEntries()
+print ptratio_tau1.GetEntries()
+print ptratio_tau2.GetEntries()
+print gen_ptratio_tau1.GetEntries()
+print gen_ptratio_tau2.GetEntries()
 
 outputfile.Close()
 input("Press Enter to continue...")
