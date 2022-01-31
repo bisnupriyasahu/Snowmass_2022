@@ -1,0 +1,341 @@
+Branch part :  647 79
+gen pid  15
+gen pid  15
+0.0506030427685
+Branch part :  647 122
+gen pid  -15
+gen pid  15
+0.0628430773099
+0.0477889925167
+Branch part :  647 135
+gen pid  -15
+Branch part :  647 201
+gen pid  -15
+gen pid  -15
+gen pid  15
+gen pid  15
+0.0257345275055
+Branch part :  647 247
+gen pid  15
+0.0580789878903
+Branch part :  647 273
+gen pid  15
+gen pid  15
+0.0335662519
+Branch part :  647 376
+gen pid  -15
+gen pid  15
+Branch part :  647 489
+gen pid  15
+Branch part :  647 497
+gen pid  -15
+gen pid  -15
+0.0139554988522
+Branch part :  647 498
+gen pid  15
+gen pid  15
+0.0352373077139
+0.0344761439323
+Branch part :  647 508
+gen pid  -15
+0.0754179374591
+Branch part :  647 519
+gen pid  -15
+gen pid  15
+gen pid  15
+0.0840732159601
+0.0800394093375
+Branch part :  647 526
+gen pid  15
+0.0708068024397
+Branch part :  647 545
+gen pid  15
+0.0941002935908
+Branch part :  647 672
+gen pid  15
+Branch part :  647 698
+gen pid  -15
+gen pid  -15
+Branch part :  647 706
+gen pid  -15
+gen pid  -15
+0.0185055904657
+Branch part :  647 788
+gen pid  15
+gen pid  15
+0.0350646459834
+Branch part :  647 817
+gen pid  -15
+gen pid  -15
+0.0272427300158
+Branch part :  647 911
+gen pid  -15
+0.035354905647
+0.0985772860075
+Branch part :  647 931
+gen pid  -15
+gen pid  15
+gen pid  15
+0.0166870850353
+0.0910675500885
+Branch part :  647 946
+gen pid  -15
+gen pid  15
+0.0756464957571
+Branch part :  647 1012
+gen pid  -15
+gen pid  15
+0.0690027698581
+Branch part :  647 1034
+0.0232013049956
+0.0319602611019
+Branch part :  647 1056
+gen pid  -15
+Branch part :  647 1207
+gen pid  15
+0.0607932396501
+Branch part :  647 1240
+gen pid  15
+gen pid  15
+Branch part :  647 1270
+gen pid  -15
+gen pid  15
+gen pid  15
+0.0861239330191
+0.050753542084
+Branch part :  647 1289
+gen pid  -15
+Branch part :  647 1380
+gen pid  -15
+gen pid  -15
+Branch part :  647 1446
+gen pid  15
+Branch part :  647 1472
+gen pid  -15
+gen pid  -15
+gen pid  15
+0.0439247872361
+0.019701137628
+Branch part :  647 1476
+gen pid  -15
+gen pid  15
+0.0542102924941
+Branch part :  647 1484
+gen pid  15
+gen pid  15
+Branch part :  647 1539
+gen pid  15
+0.0756359341056
+Branch part :  647 1551
+gen pid  15
+gen pid  15
+0.0566688168951
+0.0862074939954
+Branch part :  647 1553
+gen pid  -15
+Branch part :  647 1574
+gen pid  -15
+gen pid  15
+0.0185350553813
+Branch part :  647 1579
+gen pid  -15
+Branch part :  647 1581
+gen pid  15
+0.0103673801071
+0.0656205217012
+Branch part :  647 1623
+gen pid  -15
+gen pid  15
+Branch part :  647 1656
+gen pid  -15
+gen pid  15
+gen pid  15
+0.0666976707849
+Branch part :  647 1746
+gen pid  15
+gen pid  -15
+0.0740380738697
+0.011513650395
+0.0585915833782
+0.0993958852466
+Branch part :  647 1750
+gen pid  -15
+gen pid  15
+gen pid  15
+0.0855637445075
+Branch part :  647 1761
+gen pid  -15
+gen pid  15
+Branch part :  647 1764
+gen pid  -15
+Branch part :  647 1785
+gen pid  -15
+gen pid  -15
+Branch part :  647 1794
+gen pid  -15
+gen pid  -15
+gen pid  -15
+0.0826080663198
+0.0924949997155
+Branch part :  647 1802
+gen pid  15
+Branch part :  647 1831
+gen pid  -15
+gen pid  15
+0.079872149991
+0.0378944502182
+Branch part :  647 1892
+gen pid  -15
+gen pid  15
+0.0398150483664
+0.083396747881
+0.0581569978462
+Branch part :  647 1910
+gen pid  -15
+gen pid  -15
+gen pid  15
+0.0194969488653
+Branch part :  647 1980
+gen pid  -15
+gen pid  15
+0.0895553336006
+Branch part :  647 1995
+gen pid  -15
+Branch part :  647 2032
+gen pid  15
+gen pid  15
+0.0652213589835
+Branch part :  647 2083
+gen pid  15
+gen pid  15
+0.090395410899
+0.0537327460841
+Branch part :  647 2094
+gen pid  -15
+Branch part :  647 2164
+gen pid  -15
+gen pid  15
+0.0834202199679
+Branch part :  647 2173
+gen pid  15
+0.0736346728857
+Branch part :  647 2283
+gen pid  -15
+gen pid  -15
+Branch part :  647 2294
+gen pid  15
+Branch part :  647 2331
+gen pid  15
+gen pid  15
+0.0783051104332
+0.0879815219559
+0.0562038611607
+Branch part :  647 2570
+gen pid  -15
+gen pid  -15
+Branch part :  647 2624
+gen pid  15
+gen pid  15
+Branch part :  647 2681
+gen pid  -15
+gen pid  15
+gen pid  15
+Branch part :  647 2690
+gen pid  15
+gen pid  15
+0.0434200437955
+Branch part :  647 2741
+gen pid  15
+0.0918209349142
+0.0507949513808
+Branch part :  647 2753
+gen pid  -15
+Branch part :  647 2757
+gen pid  -15
+gen pid  -15
+gen pid  15
+0.092437727126
+Branch part :  647 2780
+gen pid  -15
+0.0398842154642
+0.049454925851
+Branch part :  647 2809
+gen pid  -15
+Branch part :  647 2883
+gen pid  15
+gen pid  15
+Branch part :  647 2891
+gen pid  -15
+gen pid  -15
+0.073474266906
+Branch part :  647 2943
+Branch part :  647 2954
+gen pid  -15
+0.0554852944787
+Branch part :  647 2965
+gen pid  -15
+0.0927612143414
+Branch part :  647 2971
+gen pid  15
+Branch part :  647 3073
+gen pid  -15
+gen pid  -15
+gen pid  15
+gen pid  -15
+Branch part :  647 3165
+gen pid  -15
+gen pid  -15
+gen pid  15
+gen pid  15
+0.0761051321781
+Branch part :  647 3198
+gen pid  -15
+gen pid  15
+Branch part :  647 3253
+gen pid  -15
+gen pid  15
+0.0923564264089
+0.0203059039235
+Branch part :  647 3262
+gen pid  -15
+gen pid  -15
+Branch part :  647 3272
+gen pid  15
+gen pid  15
+0.0478011905833
+Branch part :  647 3370
+gen pid  15
+0.0612525967271
+0.0812251111002
+0.0403429561798
+Branch part :  647 3401
+gen pid  15
+gen pid  15
+0.0494530335207
+Branch part :  647 3413
+gen pid  15
+gen pid  15
+Branch part :  647 3437
+gen pid  15
+gen pid  15
+0.0967702200836
+0.00952896913605
+Branch part :  647 3445
+gen pid  -15
+gen pid  -15
+0.0877400855528
+Branch part :  647 3446
+gen pid  -15
+gen pid  15
+Branch part :  647 3484
+gen pid  15
+gen pid  15
+0.0737275393161
+Branch part :  647 3517
+gen pid  -15
+Branch part :  647 3528
+gen pid  -15
+gen pid  15
+Branch part :  647 3540
+gen pid  -15
+gen pid  15
