@@ -27,6 +27,20 @@ try:
 except:
   pass
 
+#def nDaughters(gen):
+# """Returns the number of daughters of a genparticle."""
+#return gen.D2 - gen.D1
+
+def finalDaughters(gen, daughters=None):
+  if daughters is None:
+    daughters = []
+    print "number of daughter :", (gen.D2 - gen.D1)
+  for i in range(gen.D1, gen.D2+1):
+    daughter = branchParticle[i]
+    print "daughter : ",daughter
+  return daughters
+      
+
 inputFile = sys.argv[1]
 outputFile = sys.argv[2]
 # Create chain of root trees
@@ -193,14 +207,19 @@ for entry in range(0, numberOfEntries):
       print "gen pid ",gen.PID
       dr_1 =  math.sqrt(  (gen.Eta-(tau1.Eta)) * ((gen.Eta)-(tau1.Eta)) + ((gen.Phi)-(tau1.Phi)) * ((gen.Phi)-(tau1.Phi)) )
       dr_2 =  math.sqrt(  (gen.Eta-(tau2.Eta)) * ((gen.Eta)-(tau2.Eta)) + ((gen.Phi)-(tau2.Phi)) * ((gen.Phi)-(tau2.Phi)) )
-      print "dr 1 is ", dr_1
-      print "dr 2 is ",dr_2
+      ndau = gen.D2 - gen.D1
 
-      if (dr_1 < 0.1):
+      daughter = finalDaughters(gen)
+      for d in daughter:
+        #if abs(d.PID):
+        print "daughters are :", d.PID
+          
+      if (dr_1 < 0.3):
         gen_1 = gen
-      if (dr_2 < 0.1):
+        
+      elif (dr_2 < 0.3):
         gen_2 = gen
-        print "gen2 pt ", gen.PT
+        #print "gen2 pt ", gen.PT
   if (gen_1 is not None):
     gen_1pt =  gen_1.PT/tau1.PT
     gen_ptratio_tau1.Fill(gen_1pt)
