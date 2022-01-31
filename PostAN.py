@@ -36,8 +36,10 @@ def finalDaughters(gen, daughters=None):
     daughters = []
     print "number of daughter :", (gen.D2 - gen.D1)
   for i in range(gen.D1, gen.D2+1):
+    #print "I is : ", i
+    #print "len of part", len(branchParticle)
     daughter = branchParticle[i]
-    print "daughter : ",daughter
+    #print "daughter : ",daughter
   return daughters
       
 
@@ -202,6 +204,7 @@ for entry in range(0, numberOfEntries):
  
   gen_1 = None
   gen_2 = None
+  print "Branch part : ", len(branchParticle), entry
   for igen,gen in enumerate(branchParticle):
     if (abs(gen.PID) == 15):
       print "gen pid ",gen.PID
@@ -209,10 +212,10 @@ for entry in range(0, numberOfEntries):
       dr_2 =  math.sqrt(  (gen.Eta-(tau2.Eta)) * ((gen.Eta)-(tau2.Eta)) + ((gen.Phi)-(tau2.Phi)) * ((gen.Phi)-(tau2.Phi)) )
       ndau = gen.D2 - gen.D1
 
-      daughter = finalDaughters(gen)
-      for d in daughter:
-        #if abs(d.PID):
-        print "daughters are :", d.PID
+      # daughter = finalDaughters(gen)
+      #for d in daughter:
+      #if abs(d.PID):
+      # print "daughters are :", d.PID
           
       if (dr_1 < 0.3):
         gen_1 = gen
@@ -220,6 +223,7 @@ for entry in range(0, numberOfEntries):
       elif (dr_2 < 0.3):
         gen_2 = gen
         #print "gen2 pt ", gen.PT
+  
   if (gen_1 is not None):
     gen_1pt =  gen_1.PT/tau1.PT
     gen_ptratio_tau1.Fill(gen_1pt)
