@@ -2,11 +2,11 @@
 
 import sys
 
-import ROOT
+import ROOT 
 from array import array
 import math
 import re
-
+from ROOT import *
 import numpy as np
 
 
@@ -31,14 +31,18 @@ except:
 # """Returns the number of daughters of a genparticle."""
 #return gen.D2 - gen.D1
 
-def finalDaughters(gen, daughters=None):
+def finalDaughters(gen, brpart, daughters=None):
   if daughters is None:
     daughters = []
-    print "number of daughter :", (gen.D2 - gen.D1)
+    #print "number of daughter :", (gen.D2 - gen.D1)
+    #    print "gen_d1 : ",gen.
+    #    print "gen_d2 : ",gen.d2()
+
   for i in range(gen.D1, gen.D2+1):
     #print "I is : ", i
-    #print "len of part", len(branchParticle)
-    daughter = branchParticle[i]
+    #print "len of part", branchParticle.GetEntries()
+    daughter = brpart[i]
+    #daughter = brpart.At(i)
     #print "daughter : ",daughter
   return daughters
       
@@ -98,7 +102,9 @@ for entry in range(0, numberOfEntries):
   tau1_tau2_HT = -1
 
   i = 0
+
   for iTau1, tau1 in enumerate(branchJet) :
+    
     i +=1
     tautagOk1 = ( tau1.TauTag & (1 << 2) )
     if (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk1):
@@ -147,6 +153,12 @@ for entry in range(0, numberOfEntries):
   tau1pt = tau_1.PT
   tau2pt = tau_2.PT
   metpt = met_pt.MET
+ 
+  Tltau1_p4 = TLorentzVector()
+  Tltau2_p4 = TLorentzVector()
+  Tltau1_p4.SetPtEtaPhiM(tau1.PT, tau1.Eta, tau1.Phi, tau1.Mass)
+  Tltau2_p4.SetPtEtaPhiM(tau2.PT, tau2.Eta, tau2.Phi, tau2.Mass)
+
 
   tauPT_1.Fill(tau1pt)
   tauPT_2.Fill(tau2pt)
@@ -166,9 +178,13 @@ for entry in range(0, numberOfEntries):
     if (isLeptonic == True or consti.Charge == 0) :
       continue
     #print "ids of tau1", consti.PID
-    dR = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
+    const_p4 = TLorentzVector()
+    const_p4.SetPtEtaPhiM(consti.PT, consti.Eta, consti.Phi, consti.Mass)
+    dR = const_p4.DeltaR(Tltau1_p4)
+
+    #dR = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
     if (dR < 0.1):
-      print dR
+      print(dR)
       chpt = consti.PT
       #print "all ch pt is ", chpt
       if (tau1_leadCH is None or consti.PT > tau1_leadCH.PT):
@@ -189,7 +205,12 @@ for entry in range(0, numberOfEntries):
     if (isLeptonic2 == True or consti2.Charge == 0) :
       continue
     #print "ids of tau1", consti.PID
-    dR2 = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
+    const2_p4 = TLorentzVector()
+    const2_p4.SetPtEtaPhiM(consti2.PT, consti2.Eta, consti2.Phi, consti2.Mass)
+    dR2 = const2_p4.DeltaR(Tltau2_p4)
+
+
+    #dR2 = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
     if (dR2 < 0.1):
       #print dR
       chpt = consti.PT
@@ -204,25 +225,24 @@ for entry in range(0, numberOfEntries):
  
   gen_1 = None
   gen_2 = None
-  print "Branch part : ", len(branchParticle), entry
+  #print "Branch part : ", branchParticle.GetEntries(), entry
+  #print "Branch of jets :", branchJet.GetEntries(), entry
   for igen,gen in enumerate(branchParticle):
     if (abs(gen.PID) == 15):
-      print "gen pid ",gen.PID
-      dr_1 =  math.sqrt(  (gen.Eta-(tau1.Eta)) * ((gen.Eta)-(tau1.Eta)) + ((gen.Phi)-(tau1.Phi)) * ((gen.Phi)-(tau1.Phi)) )
-      dr_2 =  math.sqrt(  (gen.Eta-(tau2.Eta)) * ((gen.Eta)-(tau2.Eta)) + ((gen.Phi)-(tau2.Phi)) * ((gen.Phi)-(tau2.Phi)) )
-      ndau = gen.D2 - gen.D1
+      #print "gen pid ",gen.PID
+      gen_p4 = TLorentzVector()
+      gen_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
+      dr_1 = gen_p4.DeltaR(Tltau1_p4)
+      dr_2 = gen_p4.DeltaR(Tltau2_p4)
+    
 
-      # daughter = finalDaughters(gen)
-      #for d in daughter:
-      #if abs(d.PID):
-      # print "daughters are :", d.PID
-          
+      
       if (dr_1 < 0.3):
         gen_1 = gen
         
       elif (dr_2 < 0.3):
         gen_2 = gen
-        #print "gen2 pt ", gen.PT
+        #print "gen2 pt ", gen.PT          
   
   if (gen_1 is not None):
     gen_1pt =  gen_1.PT/tau1.PT
@@ -230,6 +250,23 @@ for entry in range(0, numberOfEntries):
   if (gen_2 is not None):
     gen_2pt =  gen_2.PT/tau2.PT
     gen_ptratio_tau2.Fill(gen_2pt)
+
+    
+
+  tau1tau2_m = (Tltau1_p4 + Tltau2_p4).M()
+  print ("Invarient mass : ", tau1tau2_m)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -246,14 +283,14 @@ ptratio_tau2.Write()
 gen_ptratio_tau1.Write()
 gen_ptratio_tau2.Write()
 
-print tauPT_1.GetEntries()
-print tauPT_2.GetEntries()
-print metPT.GetEntries()
-print HT_Tot.GetEntries()
-print ptratio_tau1.GetEntries()
-print ptratio_tau2.GetEntries()
-print gen_ptratio_tau1.GetEntries()
-print gen_ptratio_tau2.GetEntries()
+print( tauPT_1.GetEntries())
+print( tauPT_2.GetEntries())
+print( metPT.GetEntries())
+print( HT_Tot.GetEntries())
+print( ptratio_tau1.GetEntries())
+print( ptratio_tau2.GetEntries())
+print( gen_ptratio_tau1.GetEntries())
+print( gen_ptratio_tau2.GetEntries())
 
 outputfile.Close()
 input("Press Enter to continue...")
