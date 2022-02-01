@@ -100,7 +100,8 @@ for entry in range(0, numberOfEntries):
   tau1_idx = -1
   tau2_idx = -1
   tau1_tau2_HT = -1
-
+  Tltau1_p4 = TLorentzVector()
+  Tltau2_p4 = TLorentzVector()
   i = 0
 
   for iTau1, tau1 in enumerate(branchJet) :
@@ -119,11 +120,15 @@ for entry in range(0, numberOfEntries):
           #else: print "tau2.Charge", tau2.Charge
       if (tau1.Charge*tau2.Charge < 0):
         HT = tau1.PT + tau2.PT
+        Tltau1_p4.SetPtEtaPhiM(tau1.PT, tau1.Eta, tau1.Phi, tau1.Mass)
+        Tltau2_p4.SetPtEtaPhiM(tau2.PT, tau2.Eta, tau2.Phi, tau2.Mass)
         #print "HT in loop ", HT
         if (HT > tau1_tau2_HT) :
             tau1_idx = iTau1
             tau2_idx = iTau2
             tau1_tau2_HT = HT
+
+
   btag_idx = -1    
   for ibjet, bjet in enumerate(branchJet) :
     if (ibjet == tau1_idx or ibjet == tau2_idx): continue
@@ -144,20 +149,19 @@ for entry in range(0, numberOfEntries):
     Met_PT = met.MET
     imet_idx = imet
   #print imet_idx
+ 
+
+  tau1tau2_m = (Tltau1_p4 + Tltau2_p4).M()
+  print ("Invarient mass : ", tau1tau2_m)
   
 
-  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50)): continue
+  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
   tau_1 = branchJet.At(tau1_idx)
   tau_2 = branchJet.At(tau2_idx)
   met_pt = branchPuppiMissingET.At(imet_idx)
   tau1pt = tau_1.PT
   tau2pt = tau_2.PT
   metpt = met_pt.MET
- 
-  Tltau1_p4 = TLorentzVector()
-  Tltau2_p4 = TLorentzVector()
-  Tltau1_p4.SetPtEtaPhiM(tau1.PT, tau1.Eta, tau1.Phi, tau1.Mass)
-  Tltau2_p4.SetPtEtaPhiM(tau2.PT, tau2.Eta, tau2.Phi, tau2.Mass)
 
 
   tauPT_1.Fill(tau1pt)
@@ -252,25 +256,6 @@ for entry in range(0, numberOfEntries):
     gen_ptratio_tau2.Fill(gen_2pt)
 
     
-
-  tau1tau2_m = (Tltau1_p4 + Tltau2_p4).M()
-  print ("Invarient mass : ", tau1tau2_m)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #cnv.cd(2)
 outputfile.cd()
