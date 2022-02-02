@@ -119,15 +119,27 @@ for entry in range(0, numberOfEntries):
             continue
           #else: print "tau2.Charge", tau2.Charge
       if (tau1.Charge*tau2.Charge < 0):
+          
+        
         HT = tau1.PT + tau2.PT
         Tltau1_p4.SetPtEtaPhiM(tau1.PT, tau1.Eta, tau1.Phi, tau1.Mass)
         Tltau2_p4.SetPtEtaPhiM(tau2.PT, tau2.Eta, tau2.Phi, tau2.Mass)
         #print "HT in loop ", HT
         if (HT > tau1_tau2_HT) :
-            tau1_idx = iTau1
-            tau2_idx = iTau2
-            tau1_tau2_HT = HT
-
+          tau1_idx = iTau1
+          tau2_idx = iTau2
+          tau1_tau2_HT = HT
+  
+  if (not(tau1_idx >= 0 and tau2_idx >= 0)): continue
+  tau1 = branchJet.At(tau1_idx)
+  tau2 = branchJet.At(tau2_idx)
+  if(tau1.PT < tau2.PT):
+    tau = tau1
+    tau1 = tau2
+    tau2 = tau
+  Tltau1_p4.SetPtEtaPhiM(tau1.PT, tau1.Eta, tau1.Phi, tau1.Mass)
+  Tltau2_p4.SetPtEtaPhiM(tau2.PT, tau2.Eta, tau2.Phi, tau2.Mass)
+  tau1tau2_m = (Tltau1_p4 + Tltau2_p4).M()
 
   btag_idx = -1    
   for ibjet, bjet in enumerate(branchJet) :
@@ -151,19 +163,15 @@ for entry in range(0, numberOfEntries):
   #print imet_idx
  
 
-  tau1tau2_m = (Tltau1_p4 + Tltau2_p4).M()
-  print ("Invarient mass : ", tau1tau2_m)
   
-
-  if (not (tau1_idx > 0 and tau2_idx and btag_idx > 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
+  if (not (tau1_idx >= 0 and tau2_idx >= 0 and btag_idx >= 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
+  print ("Invarient mass : ", tau1tau2_m)
   tau_1 = branchJet.At(tau1_idx)
   tau_2 = branchJet.At(tau2_idx)
   met_pt = branchPuppiMissingET.At(imet_idx)
   tau1pt = tau_1.PT
   tau2pt = tau_2.PT
   metpt = met_pt.MET
-
-
   tauPT_1.Fill(tau1pt)
   tauPT_2.Fill(tau2pt)
   metPT.Fill(metpt)
@@ -171,26 +179,19 @@ for entry in range(0, numberOfEntries):
 
 
   isLeptonic = False  
-  #CH_PT = -1
   tau1_leadCH = None
   for consti in tau1.Constituents:
     ids = consti.PID
-    #CH_PT = consti.PT
     if (abs(ids) in [11, 12, 13, 14]):
       isLeptonic = True
-   
     if (isLeptonic == True or consti.Charge == 0) :
       continue
-    #print "ids of tau1", consti.PID
     const_p4 = TLorentzVector()
     const_p4.SetPtEtaPhiM(consti.PT, consti.Eta, consti.Phi, consti.Mass)
     dR = const_p4.DeltaR(Tltau1_p4)
-
-    #dR = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
     if (dR < 0.1):
-      print(dR)
+      #print(dR)
       chpt = consti.PT
-      #print "all ch pt is ", chpt
       if (tau1_leadCH is None or consti.PT > tau1_leadCH.PT):
         tau1_leadCH = consti
   if (tau1_leadCH is not None):
@@ -198,39 +199,34 @@ for entry in range(0, numberOfEntries):
     ptratio_tau1.Fill(leadchtau1)
 
   isLeptonic2 = False  
-  #CH_PT = -1
   tau2_leadCH = None
   for consti2 in tau1.Constituents:
+    #print("coming inside 2")
     ids2 = consti2.PID
-    #CH_PT = consti.PT
     if (abs(ids2) in [11, 12, 13, 14]):
       isLeptonic2 = True
-   
     if (isLeptonic2 == True or consti2.Charge == 0) :
       continue
-    #print "ids of tau1", consti.PID
     const2_p4 = TLorentzVector()
     const2_p4.SetPtEtaPhiM(consti2.PT, consti2.Eta, consti2.Phi, consti2.Mass)
     dR2 = const2_p4.DeltaR(Tltau2_p4)
-
-
-    #dR2 = math.sqrt(  (consti.Eta-(tau1.Eta)) * ((consti.Eta)-(tau1.Eta)) + ((consti.Phi)-(tau1.Phi)) * ((consti.Phi)-(tau1.Phi)) )
+    
     if (dR2 < 0.1):
-      #print dR
+      print("coming inside 3 dr2 :",dR2)  
       chpt = consti.PT
-      #print "all ch pt is ", chpt
       if (tau2_leadCH is None or consti2.PT > tau2_leadCH.PT):
         tau2_leadCH = consti2
   if (tau2_leadCH is not None):
     leadchtau2 =  tau2_leadCH.PT/tau2.PT
+    print("leadchtau2 is ",leadchtau2)
     ptratio_tau2.Fill(leadchtau2)
   
 
  
   gen_1 = None
   gen_2 = None
-  #print "Branch part : ", branchParticle.GetEntries(), entry
-  #print "Branch of jets :", branchJet.GetEntries(), entry
+  print("Branch part : ", branchParticle.GetEntries(), entry)
+  print( "Branch of jets :", branchJet.GetEntries(), entry)
   for igen,gen in enumerate(branchParticle):
     if (abs(gen.PID) == 15):
       #print "gen pid ",gen.PID
@@ -238,9 +234,6 @@ for entry in range(0, numberOfEntries):
       gen_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
       dr_1 = gen_p4.DeltaR(Tltau1_p4)
       dr_2 = gen_p4.DeltaR(Tltau2_p4)
-    
-
-      
       if (dr_1 < 0.3):
         gen_1 = gen
         

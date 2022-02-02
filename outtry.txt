@@ -1,0 +1,18 @@
+Invarient mass :  415.1196225425213
+Branch part :  305 1982
+Branch of jets : 9 1982
+Invarient mass :  326.71287449358334
+Branch part :  334 4646
+Branch of jets : 6 4646
+Invarient mass :  101.4436633918398
+Branch part :  252 17071
+Branch of jets : 5 17071
+3.0
+3.0
+3.0
+3.0
+3.0
+0.0
+2.0
+0.0
+Press Enter to continue...
