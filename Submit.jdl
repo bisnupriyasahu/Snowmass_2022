@@ -1,0 +1,20 @@
+x509userproxy = /tmp/x509up_u10044
+universe = vanilla
+Executable = Submit_run.sh
+Notification         = never
+#WhenToTransferOutput = On_Exit
+Requirements = (OpSysAndVer == "CENTOS7" && TARGET.Arch == "X86_64" && (MY.RequiresSharedFS=!=true || TARGET.HasAFS_OSG) && (TARGET.HAS_OSG_WN_CLIENT =?= TRUE || TARGET.IS_GLIDEIN=?=true) && IsSlowSlot=!=true)
+ShouldTransferFiles  = yes
+on_exit_remove       = (ExitBySignal == FALSE && (ExitCode == 0 || ExitCode == 42 || NumJobStarts>3))
++IsFastQueueJob      = True
++IsBuildJob = true
+getenv = true
+request_memory       = 10000
+#request_memory       = 60820
+request_disk         = 2048000
+Transfer_Input_Files = http://proxy.chtc.wisc.edu/SQUID/chtc/python##.tar.gz, packages.tar.gz,PostAN.py,InputSamples_DATA.txt
+output               = $(Cluster)_$(Process)_job.out
+error                = $(Cluster)_$(Process)_job.err
+Log                  = $(Cluster)_$(Process)_job.log
+Arguments = $(Cluster) $(Process)
+Queue 1
