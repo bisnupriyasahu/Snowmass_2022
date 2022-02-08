@@ -2,23 +2,26 @@
 # 
 
 # untar your Python installation. Make sure you are using the right version!
-tar -xzf python##.tar.gz
+#tar -xzf python##.tar.gz
 # (optional) if you have a set of packages (created in Part 1), untar them also
-tar -xzf packages.tar.gz
-
-export PATH=$PWD/python/bin:$PATH
-export PYTHONPATH=$PWD/packages
-export HOME=$PWD
-
+#tar -xzf packages.tar.gz
 echo "input parameters: cluster, process" $1 $2
 
-export pwd=/nfs_scratch/bsahu/Snowmass_2022/Post_Analyzr/CMSSW_12_2_0/delphes
+#export pwd=/nfs_scratch/bsahu/Snowmass_2022/Post_Analyzr/CMSSW_12_2_0/delphes
 source /cvmfs/cms.cern.ch/cmsset_default.sh
+#export PATH=$PWD/python/bin:$PATH
+#export PYTHONPATH=$PWD/packages
+
+
+
 CLUSTER=$1
 PROCESS=$2
-echo "PROCESS=    " $2
-export $SCRAM_ARCH=slc7_amd64_gcc700
+#echo "PROCESS=    " $2
+#export $SCRAM_ARCH=slc7_amd64_gcc700
+#export HOME=$PWD
+cmsrel CMSSW_12_2_0
 cd CMSSW_12_2_0/src/delphes
+eval `scramv1 runtime -sh`
 
 # make sure the script will use your Python installation, 
 # and the working directory as its home location
@@ -104,7 +107,7 @@ hadd -f $OutName "Out_"$OutName$rootNumber*.root
 rm Out_*root
 echo "Done execution ..."
 cd ${_CONDOR_SCRATCH_DIR}
-rm -rf ${3}
+rm -rf CMSSW_12_2_0
 
 exit $exitcode
 echo "DONE!"
