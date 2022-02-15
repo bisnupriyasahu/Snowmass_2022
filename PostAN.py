@@ -77,7 +77,7 @@ branchFatJet          = treeReader.UseBranch('JetPUPPIAK8')
 outputfile = ROOT.TFile(outputFile, 'RECREATE')
 tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 0.0, 1000.0)
 tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 0.0, 1000.0)
-metPT = ROOT.TH1F("met_pt", "MET", 100, 0.0, 1000.0)
+metPT = ROOT.TH1F("MET", "MET", 100, 0.0, 1000.0)
 HT_Tot = ROOT.TH1F("HT", "Sum P_{T}", 100, 0.0, 1000.0)
 ptratio_tau1 = ROOT.TH1F("ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 ptratio_tau2 = ROOT.TH1F("ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
@@ -85,7 +85,7 @@ genmatch_ptratio_tau1 = ROOT.TH1F("genmatch_ptratio_tau1", "P_{T} Ratio", 50, 0.
 genmatch_ptratio_tau2 = ROOT.TH1F("genmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 notgenmatch_ptratio_tau1 = ROOT.TH1F("notgenmatch_ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 notgenmatch_ptratio_tau2 = ROOT.TH1F("notgenmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
-MT = ROOT.TH1F("MT", "MT2", 100, 0.0, 1000.0)
+MT = ROOT.TH1F("MT", "MT", 100, 0.0, 1000.0)
 
 
 
@@ -105,12 +105,14 @@ for entry in range(0, numberOfEntries):
   Tltau1_p4 = TLorentzVector()
   Tltau2_p4 = TLorentzVector()
   i = 0
-
+  #print("coming in entries,", entry)
   for iTau1, tau1 in enumerate(branchJet) :
     i +=1
+    #print("coming inside tau1")
     tautagOk1 = ( tau1.TauTag & (1 << 2) )
     if (not (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk1 and abs(tau1.Charge) == 1)): continue
     for iTau2, tau2 in enumerate(branchJet):
+      #print("coming inside tau2")
       if (iTau1 == iTau2) : continue
       tautagOk2 = ( tau2.TauTag & (1 << 2) )
       if (not (tau2.PT >30 and abs(tau2.Eta) < 3. and tautagOk2 and abs(tau2.Charge) == 1)): continue
@@ -139,12 +141,12 @@ for entry in range(0, numberOfEntries):
     btagok = (bjet.BTag & (1 << 1) )
     if (bjet.PT > 30 and abs(bjet.Eta) < 5. and btagok):
       btag_idx = ibjet
-  #print "btag index" , btag_idx
+  #print( "btag index" , btag_idx)
 
   HT_Total = -1
   for ijet, jet in enumerate(branchJet) :
     HT_Total += jet.PT
-  #print "Total HT", HT_Total
+  print("Total HT", HT_Total)
     
   Met_PT = -1
   imet_idx = -1
@@ -153,7 +155,7 @@ for entry in range(0, numberOfEntries):
     Met_PT = met.MET
     Met_Phi = met.Phi
     imet_idx = imet
-  #print imet_idx
+  #print(" imet_idx", imet_idx)
  
 
   
@@ -170,9 +172,13 @@ for entry in range(0, numberOfEntries):
   metPT.Fill(metpt)
   HT_Tot.Fill(HT_Total)
 
+  leadchtau1 = -1
+  leadchtau2 = -1
+
 
   isLeptonic = False  
   tau1_leadCH = None
+
   for consti in tau1.Constituents:
     ids = consti.PID
     if (abs(ids) in [11, 12, 13, 14]):
@@ -183,7 +189,7 @@ for entry in range(0, numberOfEntries):
     const_p4.SetPtEtaPhiM(consti.PT, consti.Eta, consti.Phi, consti.Mass)
     dR = const_p4.DeltaR(Tltau1_p4)
     if (dR < 0.1):
-      #print(dR)
+      print(dR)
       chpt = consti.PT
       if (tau1_leadCH is None or consti.PT > tau1_leadCH.PT):
         tau1_leadCH = consti
@@ -194,7 +200,7 @@ for entry in range(0, numberOfEntries):
   isLeptonic2 = False  
   tau2_leadCH = None
   for consti2 in tau2.Constituents:
-    #print("coming inside 2")
+    print("coming inside consti")
     ids2 = consti2.PID
     if (abs(ids2) in [11, 12, 13, 14]):
       isLeptonic2 = True
@@ -205,13 +211,13 @@ for entry in range(0, numberOfEntries):
     dR2 = const2_p4.DeltaR(Tltau2_p4)
     
     if (dR2 < 0.1):
-      #print("coming inside 3 dr2 :",dR2)  
+      print("coming inside 3 dr2 :",dR2)  
       chpt = consti.PT
       if (tau2_leadCH is None or consti2.PT > tau2_leadCH.PT):
         tau2_leadCH = consti2
   if (tau2_leadCH is not None):
     leadchtau2 =  tau2_leadCH.PT/tau2.PT
-    #print("leadchtau2 is ",leadchtau2)
+    print("leadchtau2 is ",leadchtau2)
     ptratio_tau2.Fill(leadchtau2)
   
 
@@ -220,8 +226,6 @@ for entry in range(0, numberOfEntries):
   gen_2 = None
   #print("Branch part : ", branchParticle.GetEntries(), entry)
   #print( "Branch of jets :", branchJet.GetEntries(), entry)
-  leadchtau1 = -1
-  leadchtau2 = -1
   for igen,gen in enumerate(branchParticle):
     if (abs(gen.PID) == 15):
       #print "gen pid ",gen.PID
