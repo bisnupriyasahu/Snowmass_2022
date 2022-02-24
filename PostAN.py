@@ -75,17 +75,18 @@ branchFatJet          = treeReader.UseBranch('JetPUPPIAK8')
 
 # Book histograms
 outputfile = ROOT.TFile(outputFile, 'RECREATE')
-tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 0.0, 1000.0)
-tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 0.0, 1000.0)
-metPT = ROOT.TH1F("MET", "MET", 100, 0.0, 1000.0)
-HT_Tot = ROOT.TH1F("HT", "Sum P_{T}", 100, 0.0, 1000.0)
+nEvents = ROOT.TH1F("nEvents", "total events", 10, 0.0, 10)
+tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 30.0, 1000.0)
+tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 30.0, 1000.0)
+metPT = ROOT.TH1F("MET", "MET", 50, 0.0, 500.0)
+HT_Tot = ROOT.TH1F("HT", "Sum P_{T}", 100, 0.0, 1500.0)
 ptratio_tau1 = ROOT.TH1F("ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 ptratio_tau2 = ROOT.TH1F("ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 genmatch_ptratio_tau1 = ROOT.TH1F("genmatch_ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 genmatch_ptratio_tau2 = ROOT.TH1F("genmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 notgenmatch_ptratio_tau1 = ROOT.TH1F("notgenmatch_ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 notgenmatch_ptratio_tau2 = ROOT.TH1F("notgenmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
-MT = ROOT.TH1F("MT", "MT", 100, 0.0, 1000.0)
+MT = ROOT.TH1F("MT", "MT", 50, 0.0, 500.0)
 
 
 
@@ -95,7 +96,8 @@ MT = ROOT.TH1F("MT", "MT", 100, 0.0, 1000.0)
 for entry in range(0, numberOfEntries):
   # Load selected branches with data from specified event
   treeReader.ReadEntry(entry)
-
+  nEvents.Fill(1)
+  nEvents.Fill(2,numberOfEntries)
   # If event contains at least 1 jet
   #if branchJet.GetEntries() > 0:
   # Take first jet
@@ -281,6 +283,7 @@ for entry in range(0, numberOfEntries):
 
 #cnv.cd(2)
 outputfile.cd()
+nEvents.Write()
 tauPT_1.Write()
 tauPT_2.Write()
 metPT.Write()
@@ -293,6 +296,7 @@ notgenmatch_ptratio_tau1.Write()
 notgenmatch_ptratio_tau2.Write()
 MT.Write()
 
+print( nEvents.GetEntries())
 print( tauPT_1.GetEntries())
 print( tauPT_2.GetEntries())
 print( metPT.GetEntries())
@@ -306,3 +310,4 @@ print( notgenmatch_ptratio_tau2.GetEntries())
 print( MT.GetEntries())
 outputfile.Close()
 input("Press Enter to continue...")
+
