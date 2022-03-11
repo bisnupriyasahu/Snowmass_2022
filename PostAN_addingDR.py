@@ -265,9 +265,10 @@ for entry in range(0, numberOfEntries):
 
   
   lep_p4 = TLorentzVector()
-  lep1_dr = lep1_dr = -1
+  lep1_dr = lep2_dr = -1
+  min_dr = 999.9 
   for jgen,gen in enumerate(branchParticle):
-    min_dr = 999.9 
+
     if(abs(gen.PID) in [11,13]):
       lep_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
       if (gen_1 is not None): 
@@ -276,10 +277,10 @@ for entry in range(0, numberOfEntries):
         lep2_dr = lep_p4.DeltaR(gen2_p4)
       if (lep1_dr < min_dr):
         min_dr = lep1_dr
-      elif (lep2_dr < lep2_dr):
+      elif (lep2_dr < min_dr):
         min_dr = lep2_dr
-    DR_daughter.Fill(min_dr)
-    print("min dr is : ",min_dr)
+  DR_daughter.Fill(min_dr)
+  print("min dr is : ",min_dr)
 
 
   tau1_px = Tltau1_p4.Px()
