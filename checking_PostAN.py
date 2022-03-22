@@ -85,7 +85,8 @@ genmatch_ptratio_tau2 = ROOT.TH1F("genmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.
 notgenmatch_ptratio_tau1 = ROOT.TH1F("notgenmatch_ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 notgenmatch_ptratio_tau2 = ROOT.TH1F("notgenmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 MT = ROOT.TH1F("MT", "MT", 50, 0.0, 500.0)
-DR_daughter = ROOT.TH1F("DeltaR","Delta R ",2000,0.0,3)
+DR_daughter = ROOT.TH1F("DeltaR_daugh","Delta R ",2000,0.0,3)
+dR_consti = ROOT.TH1F("DeltaR_consti","Delta R ",2000,0.0,3)
 r1_Energy = ROOT.TH1F("const_vs_tau1", "Energy Ratio", 50, 0.0, 2.0)
 r2_Energy = ROOT.TH1F("const_vs_tau2", "Energy Ratio", 50, 0.0, 2.0)
 
@@ -180,8 +181,11 @@ for entry in range(0, numberOfEntries):
   isLeptonic = False  
   tau1_leadCH = None
   all_consti1_p4 = TLorentzVector()
-  for consti in tau1.Constituents:
+  # for consti in tau1.Constituents:
+  for iconst,consti in enumerate(branchPuppiCandidate):
+    #print("branchpf candidate",branchPuppiCandidate.GetEntries())
     ids = consti.PID
+
     if (abs(ids) in [11, 12, 13, 14]):
       isLeptonic = True
     if (isLeptonic == True or consti.Charge == 0) :
@@ -189,10 +193,12 @@ for entry in range(0, numberOfEntries):
     const_p4 = TLorentzVector()
     const_p4.SetPtEtaPhiM(consti.PT, consti.Eta, consti.Phi, consti.Mass)
     all_consti1_p4 += const_p4
-    print("charge of consti", consti.Charge)
+    print("pid of pf",ids )
+    print("charge of consti", consti.Charge)  
 
 
     dR = const_p4.DeltaR(Tltau1_p4)
+    dR_consti.Fill(dR)
     if (dR < 0.1):
       #print(dR)
       chpt = consti.PT
@@ -210,7 +216,7 @@ for entry in range(0, numberOfEntries):
   all_consti2_p4 = TLorentzVector()
   isLeptonic2 = False  
   tau2_leadCH = None
-  for consti2 in tau2.Constituents:
+  for consti2 in enumerate(branchPuppiCandidate):
     #print("coming inside consti")
     ids2 = consti2.PID
     if (abs(ids2) in [11, 12, 13, 14]):
@@ -227,10 +233,10 @@ for entry in range(0, numberOfEntries):
       chpt = consti.PT
       if (tau2_leadCH is None or consti2.PT > tau2_leadCH.PT):
         tau2_leadCH = consti2
-  print("all_consti2_p4 energy", all_consti2_p4.E())
+  #print("all_consti2_p4 energy", all_consti2_p4.E())
   ratio2_energy = all_consti2_p4.E()/Tltau1_p4.E()
   r2_Energy.Fill(ratio2_energy)
-  print("ratio_energy of tau2 vs const", ratio2_energy)
+  #print("ratio_energy of tau2 vs const", ratio2_energy)
 
   if (tau2_leadCH is not None):
     leadchtau2 =  tau2_leadCH.PT/tau2.PT
@@ -339,6 +345,7 @@ notgenmatch_ptratio_tau1.Write()
 notgenmatch_ptratio_tau2.Write()
 MT.Write()
 DR_daughter.Write()
+dR_consti.Write()
 r1_Energy.Write()
 r2_Energy.Write()
 
@@ -355,6 +362,7 @@ print( notgenmatch_ptratio_tau1.GetEntries())
 print( notgenmatch_ptratio_tau2.GetEntries())
 print( MT.GetEntries())
 print( DR_daughter.GetEntries())
+print( dR_consti.GetEntries()) 
 print( r1_Energy.GetEntries())
 print( r2_Energy.GetEntries())
 
