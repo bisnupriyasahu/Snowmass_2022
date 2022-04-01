@@ -193,11 +193,11 @@ for entry in range(0, numberOfEntries):
     #print("branchpf candidate",branchPuppiCandidate.GetEntries())
     ids = consti.PID
     
-    if (abs(ids) in [11, 12, 13, 14]):
-      isLeptonic = True
-      nlept_1 = nlept_1 + 1
-    if (isLeptonic == True or consti.Charge == 0) :
-      continue
+    #if (abs(ids) in [11, 12, 13, 14]):
+    #isLeptonic = True
+    nlept_1 = nlept_1 + 1
+    #if (isLeptonic == True or consti.Charge == 0) :
+    # continue
     
     const_p4 = TLorentzVector()
     const_p4.SetPtEtaPhiM(consti.PT, consti.Eta, consti.Phi, consti.Mass)
@@ -219,7 +219,7 @@ for entry in range(0, numberOfEntries):
   nHAD1.Fill(nhadronic_1)
 
   print("all_consti1_p4 energy", all_consti1_p4.E())
-  ratio_energy = all_consti1_p4.E()/Tltau1_p4.E()
+  ratio_energy = Tltau1_p4.E()/all_consti1_p4.E()
   r1_Energy.Fill(ratio_energy)
   print("ratio_energy of tau1 vs const", ratio_energy)
   if (tau1_leadCH is not None):
@@ -235,13 +235,13 @@ for entry in range(0, numberOfEntries):
   for consti2 in tau2.Constituents:
     #print("coming inside consti")
     ids2 = consti2.PID
-    if (abs(ids2) in [11, 12, 13, 14]):
-      isLeptonic2 = True
-      nlept_2 = nlept_2 + 1
+    #if (abs(ids2) in [11, 12, 13, 14]):
+    # isLeptonic2 = True
+    nlept_2 = nlept_2 + 1
  
-    if (isLeptonic2 == True or consti2.Charge == 0) :
-      continue
-    nhadronic_2 += nhadronic_2
+    #if (isLeptonic2 == True or consti2.Charge == 0) :
+    #continue
+    #nhadronic_2 += nhadronic_2
     const2_p4 = TLorentzVector()
     const2_p4.SetPtEtaPhiM(consti2.PT, consti2.Eta, consti2.Phi, consti2.Mass)
     all_consti2_p4 += const2_p4
@@ -254,7 +254,7 @@ for entry in range(0, numberOfEntries):
       if (tau2_leadCH is None or consti2.PT > tau2_leadCH.PT):
         tau2_leadCH = consti2
   #print("all_consti2_p4 energy", all_consti2_p4.E())
-  ratio2_energy = all_consti2_p4.E()/Tltau1_p4.E()
+  ratio2_energy = Tltau2_p4.E()/all_consti2_p4.E()
   r2_Energy.Fill(ratio2_energy)
   #print("ratio_energy of tau2 vs const", ratio2_energy)
   print("2nd tau num of leptons : ", nlept_2)
