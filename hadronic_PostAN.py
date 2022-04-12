@@ -239,25 +239,26 @@ for entry in range(0, numberOfEntries):
   for igen,gen in enumerate(branchParticle):
     gen_tau = None    
     gen_p4 = TLorentzVector()
-    gen_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
+
     gen_tau_p4 = TLorentzVector()
     if(abs(gen.PID) == 15):
       gen_tau = igen
-
       gen_tau_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
-    if(gen_tau == igen): continue
-    dr_gentau = gen_p4.DeltaR(gen_tau_p4)
-    if (dr_gentau < 0.1):
-      print("dr gen tau ", dr_gentau)
-      if (abs(gen.PID) in [11, 13]): continue
+
+      for jgen,genlep in enumerate(branchParticle):
+        gen_p4.SetPtEtaPhiM(genlep.PT, genlep.Eta, genlep.Phi, genlep.Mass)
+        dr_gentau = gen_p4.DeltaR(gen_tau_p4)
+        if (dr_gentau < 0.1):
+          print("dr gen tau ", dr_gentau)
+          if (abs(gen.PID) in [11, 13]): continue
       
-    dr_1 = gen_p4.DeltaR(Tltau1_p4)
-    dr_2 = gen_p4.DeltaR(Tltau2_p4)
-    if (dr_1 < 0.3):
-      gen_1 = gen
+          dr_1 = gen_p4.DeltaR(Tltau1_p4)
+          dr_2 = gen_p4.DeltaR(Tltau2_p4)
+          if (dr_1 < 0.3):
+            gen_1 = gen
       
-    elif (dr_2 < 0.3):
-      gen_2 = gen
+          elif (dr_2 < 0.3):
+            gen_2 = gen
           
   if (gen_1 is not None):
     #print (leadchtau1)
