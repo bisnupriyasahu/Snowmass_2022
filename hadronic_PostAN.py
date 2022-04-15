@@ -250,15 +250,14 @@ for entry in range(0, numberOfEntries):
         dr_gentau = gen_p4.DeltaR(gen_tau_p4)
         if (dr_gentau < 0.1):
           print("dr gen tau ", dr_gentau)
-          if (abs(gen.PID) in [11, 13]): continue
+          if (abs(genlep.PID) in [11, 13]): continue
       
-          dr_1 = gen_p4.DeltaR(Tltau1_p4)
-          dr_2 = gen_p4.DeltaR(Tltau2_p4)
-          if (dr_1 < 0.3):
-            gen_1 = gen
-      
-          elif (dr_2 < 0.3):
-            gen_2 = gen
+      dr_1 = gen_tau_p4.DeltaR(Tltau1_p4)
+      dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
+      if (dr_1 < 0.3):
+        gen_1 = gen
+      elif (dr_2 < 0.3):
+        gen_2 = gen
           
   if (gen_1 is not None):
     #print (leadchtau1)
