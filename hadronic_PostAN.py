@@ -1,7 +1,6 @@
 #!/Usr/bin/env python
 
 import sys
-
 import ROOT 
 from array import array
 import math
@@ -80,13 +79,55 @@ metPT = ROOT.TH1F("MET", "MET", 50, 0.0, 500.0)
 HT_Tot = ROOT.TH1F("HT", "Sum P_{T}", 100, 0.0, 1500.0)
 ptratio_tau1 = ROOT.TH1F("ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 ptratio_tau2 = ROOT.TH1F("ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+
 genmatch_ptratio_tau1 = ROOT.TH1F("genmatch_ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_3050 = ROOT.TH1F("genmatchedR_PT1_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_5080 = ROOT.TH1F("genmatchedR_PT2_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_80130 = ROOT.TH1F("genmatchedR_PT3_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_130180 = ROOT.TH1F("genmatchedR_PT4_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_180230 = ROOT.TH1F("genmatchedR_PT5_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_230280 = ROOT.TH1F("genmatchedR_PT6_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_280330 = ROOT.TH1F("genmatchedR_PT7_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_330380 = ROOT.TH1F("genmatchedR_PT8_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_R_380500 = ROOT.TH1F("genmatchedR_PT9_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+
 genmatch_ptratio_tau2 = ROOT.TH1F("genmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_3050 = ROOT.TH1F("genmatchedR_PT1_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_5080 = ROOT.TH1F("genmatchedR_PT2_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_80130 = ROOT.TH1F("genmatchedR_PT3_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_130180 = ROOT.TH1F("genmatchedR_PT4_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_180230 = ROOT.TH1F("genmatchedR_PT5_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_230280 = ROOT.TH1F("genmatchedR_PT6_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_280330 = ROOT.TH1F("genmatchedR_PT7_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_330380 = ROOT.TH1F("genmatchedR_PT8_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_R_380500 = ROOT.TH1F("genmatchedR_PT9_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+
 notgenmatch_ptratio_tau1 = ROOT.TH1F("notgenmatch_ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_3050 = ROOT.TH1F("notgenmatched_R_PT1_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_5080 = ROOT.TH1F("notgenmatched_R_PT2_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_80130 = ROOT.TH1F("notgenmatched_R_PT3_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_130180 = ROOT.TH1F("notgenmatched_R_PT4_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_180230 = ROOT.TH1F("notgenmatched_R_PT5_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_230280 = ROOT.TH1F("notgenmatched_R_PT6_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_280330 = ROOT.TH1F("notgenmatched_R_PT7_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_330380 = ROOT.TH1F("notgenmatched_R_PT8_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+t1_notgR_380500 = ROOT.TH1F("notgenmatched_R_PT9_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
+
 notgenmatch_ptratio_tau2 = ROOT.TH1F("notgenmatch_ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_3050 = ROOT.TH1F("notgenmatched_R_PT1_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_5080 = ROOT.TH1F("notgenmatched_R_PT2_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_80130 = ROOT.TH1F("notgenmatched_R_PT3_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_130180 = ROOT.TH1F("notgenmatched_R_PT4_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_180230 = ROOT.TH1F("notgenmatched_R_PT5_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_230280 = ROOT.TH1F("notgenmatched_R_PT6_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_280330 = ROOT.TH1F("notgenmatched_R_PT7_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_330380 = ROOT.TH1F("notgenmatched_R_PT8_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+t2_notgR_380500 = ROOT.TH1F("notgenmatched_R_PT9_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
+
 MT = ROOT.TH1F("MT", "MT", 50, 0.0, 500.0)
 DR_daughter = ROOT.TH1F("DeltaR","Delta R ",2000,0.0,3)
-
+DR_nr_genreco1 = ROOT.TH1F("DeltaR_1","Delta R ",2000,0.0,3)
+DR_nr_genreco2 = ROOT.TH1F("DeltaR_2","Delta R ",2000,0.0,3)
 
 #histElectronPT = ROOT.TH1F("Electron_pt", "electron P_{T}", 100, 0.0, 1000.0)
 
@@ -239,7 +280,7 @@ for entry in range(0, numberOfEntries):
   for igen,gen in enumerate(branchParticle):
     gen_tau = None    
     gen_p4 = TLorentzVector()
-
+    min_dr = 999.9
     gen_tau_p4 = TLorentzVector()
     if(abs(gen.PID) == 15):
       gen_tau = igen
@@ -256,26 +297,144 @@ for entry in range(0, numberOfEntries):
       dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
       if (dr_1 < 0.3):
         gen_1 = gen
+        if (dr_1 < min_dr):
+          min_dr = dr_1
+          DR_nr_genreco1.Fill(min_dr)
       elif (dr_2 < 0.3):
         gen_2 = gen
-          
+        if(dr_1 < min_dr):
+          min_dr = dr_2  
+          DR_nr_genreco2.Fill(min_dr)
   if (gen_1 is not None):
     #print (leadchtau1)
     gen_1pt =  gen_1.PT/tau1.PT
     gen1_p4.SetPtEtaPhiM(gen_1.PT, gen_1.Eta, gen_1.Phi, gen_1.Mass)     
+    if (tau1.PT > 30  and tau1.PT < 50):
+      t1_R_3050.Fill(leadchtau1)
+
+    if (tau1.PT > 50 and tau1.PT < 80):
+      t1_R_5080.Fill(leadchtau1)
+
+    if (tau1.PT > 80 and tau1.PT < 130):
+      t1_R_80130.Fill(leadchtau1)
+
+    if (tau1.PT > 130 and tau1.PT < 180):
+      t1_R_130180.Fill(leadchtau1)
+
+    if (tau1.PT > 180 and tau1.PT < 230):
+      t1_R_180230.Fill(leadchtau1)
+
+    if (tau1.PT > 230 and tau1.PT < 280):
+      t1_R_230280.Fill(leadchtau1)
+
+    if (tau1.PT > 280 and tau1.PT < 330):
+      t1_R_280330.Fill(leadchtau1)
+
+    if (tau1.PT > 330 and tau1.PT < 380):
+      t1_R_330380.Fill(leadchtau1)
+
+    if (tau1.PT > 380 and tau1.PT < 500):
+      t1_R_380500.Fill(leadchtau1)
+
 
     genmatch_ptratio_tau1.Fill(leadchtau1)
   else: 
     print (leadchtau1)
     notgenmatch_ptratio_tau1.Fill(leadchtau1)
+    if (tau1.PT > 30  and tau1.PT < 50):
+      t1_notgR_3050.Fill(leadchtau1)
+
+    if (tau1.PT > 50 and tau1.PT < 80):
+      t1_notgR_5080.Fill(leadchtau1)
+
+    if (tau1.PT > 80 and tau1.PT < 130):
+      t1_notgR_80130.Fill(leadchtau1)
+
+    if (tau1.PT > 130 and tau1.PT < 180):
+      t1_notgR_130180.Fill(leadchtau1)
+
+    if (tau1.PT > 180 and tau1.PT < 230):
+      t1_notgR_180230.Fill(leadchtau1)
+
+    if (tau1.PT > 230 and tau1.PT < 280):
+      t1_notgR_230280.Fill(leadchtau1)
+
+    if (tau1.PT > 280 and tau1.PT < 330):
+      t1_notgR_280330.Fill(leadchtau1)
+
+    if (tau1.PT > 330 and tau1.PT < 380):
+      t1_notgR_330380.Fill(leadchtau1)
+
+    if (tau1.PT > 380 and tau1.PT < 500):
+      t1_notgR_380500.Fill(leadchtau1)
+
+
+
+
   if (gen_2 is not None):
     gen_2pt =  gen_2.PT/tau2.PT
     gen2_p4.SetPtEtaPhiM(gen_2.PT, gen_2.Eta, gen_2.Phi, gen_2.Mass)     
 
     genmatch_ptratio_tau2.Fill(leadchtau2)
+    if (tau2.PT > 30  and tau2.PT < 50):
+      t2_R_3050.Fill(leadchtau2)
+
+    if (tau2.PT > 50 and tau2.PT < 80):
+      t2_R_5080.Fill(leadchtau2)
+
+    if (tau2.PT > 80 and tau2.PT < 130):
+      t2_R_80130.Fill(leadchtau2)
+
+    if (tau2.PT > 130 and tau2.PT < 180):
+      t2_R_130180.Fill(leadchtau2)
+
+    if (tau2.PT > 180 and tau2.PT < 230):
+      t2_R_180230.Fill(leadchtau2)
+
+    if (tau2.PT > 230 and tau2.PT < 280):
+      t2_R_230280.Fill(leadchtau2)
+
+    if (tau2.PT > 280 and tau2.PT < 330):
+      t2_R_280330.Fill(leadchtau2)
+
+    if (tau2.PT > 330 and tau2.PT < 380):
+      t2_R_330380.Fill(leadchtau2)
+
+    if (tau2.PT > 380 and tau2.PT < 500):
+      t2_R_380500.Fill(leadchtau2)
+
+  
+
   else:
     print (leadchtau2)
     notgenmatch_ptratio_tau2.Fill(leadchtau2)
+    if (tau2.PT > 30  and tau2.PT < 50):
+      t2_notgR_3050.Fill(leadchtau2)
+
+    if (tau2.PT > 50 and tau2.PT < 80):
+      t2_notgR_5080.Fill(leadchtau2)
+
+    if (tau2.PT > 80 and tau2.PT < 130):
+      t2_notgR_80130.Fill(leadchtau2)
+
+    if (tau2.PT > 130 and tau2.PT < 180):
+      t2_notgR_130180.Fill(leadchtau2)
+
+    if (tau2.PT > 180 and tau2.PT < 230):
+      t2_notgR_180230.Fill(leadchtau2)
+
+    if (tau2.PT > 230 and tau2.PT < 280):
+      t2_notgR_230280.Fill(leadchtau2)
+
+    if (tau2.PT > 280 and tau2.PT < 330):
+      t2_notgR_280330.Fill(leadchtau2)
+
+    if (tau2.PT > 330 and tau2.PT < 380):
+      t2_notgR_330380.Fill(leadchtau2)
+
+    if (tau2.PT > 380 and tau2.PT < 500):
+      t2_notgR_380500.Fill(leadchtau2)
+
 
 
 
@@ -339,6 +498,50 @@ notgenmatch_ptratio_tau1.Write()
 notgenmatch_ptratio_tau2.Write()
 MT.Write()
 DR_daughter.Write()
+DR_nr_genreco1.Write()
+DR_nr_genreco2.Write()
+t1_R_3050.Write()
+t1_R_5080.Write()
+t1_R_80130.Write()
+t1_R_130180.Write()
+t1_R_180230.Write()
+t1_R_230280.Write()
+t1_R_280330.Write()
+t1_R_330380.Write()
+t1_R_380500.Write()
+
+
+t1_notgR_3050.Write()
+t1_notgR_5080.Write()
+t1_notgR_80130.Write()
+t1_notgR_130180.Write()
+t1_notgR_180230.Write()
+t1_notgR_230280.Write()
+t1_notgR_280330.Write()
+t1_notgR_330380.Write()
+t1_notgR_380500.Write()
+
+t2_R_3050.Write()
+t2_R_5080.Write()
+t2_R_80130.Write()
+t2_R_130180.Write()
+t2_R_180230.Write()
+t2_R_230280.Write()
+t2_R_280330.Write()
+t2_R_330380.Write()
+t2_R_380500.Write()
+
+
+t2_notgR_3050.Write()
+t2_notgR_5080.Write()
+t2_notgR_80130.Write()
+t2_notgR_130180.Write()
+t2_notgR_180230.Write()
+t2_notgR_230280.Write()
+t2_notgR_280330.Write()
+t2_notgR_330380.Write()
+t2_notgR_380500.Write()
+
 
 print( nEvents.GetEntries())
 print( tauPT_1.GetEntries())
@@ -353,6 +556,50 @@ print( notgenmatch_ptratio_tau1.GetEntries())
 print( notgenmatch_ptratio_tau2.GetEntries())
 print( MT.GetEntries())
 print( DR_daughter.GetEntries())
+print( DR_nr_genreco1.GetEntries())
+print( DR_nr_genreco2.GetEntries())
+
+print( t1_R_3050.GetEntries())
+print( t1_R_5080.GetEntries())
+print( t1_R_80130.GetEntries())
+print( t1_R_130180.GetEntries())
+print( t1_R_180230.GetEntries())
+print( t1_R_230280.GetEntries())
+print( t1_R_280330.GetEntries())
+print( t1_R_330380.GetEntries())
+print( t1_R_380500.GetEntries())
+
+
+print( t1_notgR_3050.GetEntries())
+print( t1_notgR_5080.GetEntries())
+print( t1_notgR_80130.GetEntries())
+print( t1_notgR_130180.GetEntries())
+print( t1_notgR_180230.GetEntries())
+print( t1_notgR_230280.GetEntries())
+print( t1_notgR_280330.GetEntries())
+print( t1_notgR_330380.GetEntries())
+print( t1_notgR_380500.GetEntries())
+
+print( t2_R_3050.GetEntries())
+print( t2_R_5080.GetEntries())
+print( t2_R_80130.GetEntries())
+print( t2_R_130180.GetEntries())
+print( t2_R_180230.GetEntries())
+print( t2_R_230280.GetEntries())
+print( t2_R_280330.GetEntries())
+print( t2_R_330380.GetEntries())
+print( t2_R_380500.GetEntries())
+
+print( t2_notgR_3050.GetEntries())
+print( t2_notgR_5080.GetEntries())
+print( t2_notgR_80130.GetEntries())
+print( t2_notgR_130180.GetEntries())
+print( t2_notgR_180230.GetEntries())
+print( t2_notgR_230280.GetEntries())
+print( t2_notgR_280330.GetEntries())
+print( t2_notgR_330380.GetEntries())
+print( t2_notgR_380500.GetEntries())
+
 
 outputfile.Close()
 input("Press Enter to continue...")
