@@ -201,7 +201,7 @@ for entry in range(0, numberOfEntries):
 
   
   if (not (tau1_idx >= 0 and tau2_idx >= 0 and btag_idx >= 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
-  print ("Invarient mass : ", tau1tau2_m)
+  #print ("Invarient mass : ", tau1tau2_m)
   tau_1 = branchJet.At(tau1_idx)
   tau_2 = branchJet.At(tau2_idx)
   met_pt = branchPuppiMissingET.At(imet_idx)
@@ -274,7 +274,8 @@ for entry in range(0, numberOfEntries):
   
   gen_1PT = -1
   gen_2PT = -1
-
+  STOP_idx = -1
+  LSP_idx = -1
   dr_dau = -1
   #  gen_elep4 = gen_mup4 = gen_taup4 = TLorentzVector()
   gen1_p4 = gen2_p4 = TLorentzVector()
@@ -286,6 +287,15 @@ for entry in range(0, numberOfEntries):
     gen_p4 = TLorentzVector()
     min_dr = 999.9
     gen_tau_p4 = TLorentzVector()
+    if(abs(gen.PID) == 1000006 and gen.Mass == 1000):
+      STOP_idx = igen
+      print("STOP mass is : ",gen.Mass)
+    if(abs(gen.PID) == 1000022 and gen.Mass == 100 and igen != STOP_idx):
+      LSP_idx = igen
+      print("LSP mass is : ",gen.Mass)
+
+  for igen,gen in enumerate(branchParticle):
+    if(not (STOP_idx >= 0 and LSP_idx >= 0) or igen == STOP_idx or igen == LSP_idx): continue
     if(abs(gen.PID) == 15):
       gen_tau = igen
       gen_tau_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
@@ -345,7 +355,7 @@ for entry in range(0, numberOfEntries):
 
     genmatch_ptratio_tau1.Fill(leadchtau1)
   else: 
-    print (leadchtau1)
+    #print (leadchtau1)
     notgenmatch_ptratio_tau1.Fill(leadchtau1)
     if (gen_1PT > 30  and gen_1PT < 50):
       t1_notgR_3050.Fill(leadchtau1)
@@ -378,18 +388,18 @@ for entry in range(0, numberOfEntries):
 
 
   if (gen_2 is not None):
-    print("gen_2 pt is : ",gen_2.PT)
+    #print("gen_2 pt is : ",gen_2.PT)
 
     gen_2pt =  gen_2.PT/tau2.PT
     gen2_p4.SetPtEtaPhiM(gen_2.PT, gen_2.Eta, gen_2.Phi, gen_2.Mass)     
     
     genmatch_ptratio_tau2.Fill(leadchtau2)
     if (gen_2PT > 30  and gen_2PT < 50):
-      print("gen_2 pt3050 is : ",gen_2PT)
+      #print("gen_2 pt3050 is : ",gen_2PT)
       t2_R_3050.Fill(leadchtau2)
 
     if (gen_2PT > 50 and gen_2PT < 80):
-      print("gen_2 pt5080 is : ",gen_2PT)
+      #print("gen_2 pt5080 is : ",gen_2PT)
       t2_R_5080.Fill(leadchtau2)
 
     if (gen_2PT > 80 and gen_2PT < 130):
@@ -416,7 +426,7 @@ for entry in range(0, numberOfEntries):
   
 
   else:
-    print (leadchtau2)
+    #print (leadchtau2)
     notgenmatch_ptratio_tau2.Fill(leadchtau2)
     if (gen_2PT > 30  and gen_2PT < 50):
       t2_notgR_3050.Fill(leadchtau2)
@@ -466,7 +476,7 @@ for entry in range(0, numberOfEntries):
       elif (lep2_dr < min_dr):
         min_dr = lep2_dr
   DR_daughter.Fill(min_dr)
-  print("min dr is : ",min_dr)
+  #print("min dr is : ",min_dr)
 
 
   tau1_px = Tltau1_p4.Px()
@@ -489,7 +499,7 @@ for entry in range(0, numberOfEntries):
     tau2_m,tau2_px,tau2_py,
     MET_px,MET_py,
     0,0)
-  print("MT is : ", MT_)
+  #print("MT is : ", MT_)
   MT.Fill(MT_)
 
 
